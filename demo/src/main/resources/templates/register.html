@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap Core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <title>Registration</title>
+</head>
+<body>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="register-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Register</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- 显示成功消息 -->
+                    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+                    <!-- 显示错误消息 -->
+                    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+                    <form th:action="@{/register}" method="post" role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="username">username:</label>
+                                <input class="form-control" type="text" id="username" name="username" th:value="${admin.username}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">password:</label>
+                                <input class="form-control" type="password" id="password" name="password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">email:</label>
+                                <input class="form-control" type="email" id="email" name="email" th:value="${admin.email}" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-lg btn-success btn-block">register</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/admin.js"></script>
+</body>
+</html>

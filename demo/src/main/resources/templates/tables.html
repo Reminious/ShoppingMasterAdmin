@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <title>Admin</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Admin v4.0</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell-o"></i> <i class="fa fa-caret-down"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/viewFeedback"><i class="fa fa-warning"></i> View Feedback</a></li>
+                    <li><a href="/notification/notificationList"><i class="fa fa-bell-o"></i> View All Notification</a>
+                    </li>
+                    <li><a href="/notification/createNotification"><i class="fa fa-bell-o"></i> Create Notification</a>
+                    </li>
+                    <li><a href="/notification/checkAndNotifyExpiringCoupons"><i class="fa fa-warning"></i> Check and
+                        Notify
+                        Expiring Coupons</a></li>
+                    <li><a href="javascript:void(0)" onclick="sendGlobalNotification()"><i class="fa fa-sun-o"></i> Send
+                        Global Notification</a></li>
+                    <!-- 在这里添加更多选项 -->
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-spinner fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/admin/viewRecord"><i class="fa fa-hand-o-right fa-fw"></i> View Running Status</a>
+                    </li>
+                    <li><a href="/admin/coupon/runScript"><i class="fa fa-question fa-fw"></i> Check NewCoupon For
+                        All</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+
+                </ul>
+
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-gear fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/register"><i class="fa fa-plus fa-fw"></i> Register New Admin</a></li>
+                    <li><a href="/dashboard"><i class="fa fa-user fa-fw"></i> Dashboard</a></li>
+                    <!-- 在这里添加更多选项 -->
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search">
+                        <form action="/admin/coupon" method="get" class="input-group custom-search-form">
+                            <input type="text" class="form-control" name="searchTerm" placeholder="Search Shops...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="searchShop">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </form>
+                        <!-- /input-group -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-navicon fa-fw"></i> Shops<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li th:each="web : ${webs}">
+                                <a th:href="@{'/admin/coupon'(shopId=${web.id},searchTerm=${searchTerm})}"
+                                   th:text="${web.shopName}">Shop Name</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Users<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{'/admin/user/default'}">View users</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+
+<!-- /.navbar-static-side -->
+</nav>
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Vouchers</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading btn-group-justified">
+                    <a th:href="@{/admin/coupon/create(shopId=${websiteId})}" class="btn btn-default btn-block">Create
+                        New Coupon</a>
+                    <a th:href="@{/admin/coupon/runScript(shopId=${websiteId})}" class="btn btn-default btn-block">Check
+                        for new coupon</a>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Description</th>
+                            <th>ExpireDate</th>
+                            <th>Discount</th>
+                            <th>Verification Status</th>
+                            <th>Code or Deal</th>
+                            <th>Terms</th>
+                            <th>Promo Code</th>
+                            <th>Url</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="coupon:${coupons}" class="odd gradeX">
+                            <td th:text="${coupon.id}"></td>
+                            <td th:text="${coupon.description}"></td>
+                            <td th:text="${coupon.expirationDate}"></td>
+                            <td class="center" th:text="${coupon.discount}"></td>
+                            <td class="center" th:text="${coupon.verified}"></td>
+                            <td th:text="${coupon.codeOrDeal}"></td>
+                            <td th:text="${coupon.terms}"></td>
+                            <td th:text="${coupon.promoCode}"></td>
+                            <td class="center">
+                                <a th:href="${coupon.promoUrl}" target="_blank">New tab</a>
+                            </td>
+                            <td class="center">
+                                <a th:href="@{/admin/coupon/update(couponId=${coupon.id},shopId=${websiteId})}"><i
+                                        class="fa fa-repeat"></i></a>
+                                <span style="color:#1ab7ea"> / </span>
+                                <a th:href="@{/admin/coupon/delete(couponId=${coupon.id},shopId=${websiteId})}"><i
+                                        class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/metisMenu/metisMenu.min.js"></script>
+
+<!-- DataTables JavaScript -->
+<script src="/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="/datatables-responsive/dataTables.responsive.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/admin.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
+
+<script>//This is for sending global message
+function sendGlobalNotification() {
+    // 发送 AJAX 请求到后端控制器方法
+    fetch('/notification/sendGlobalNotification', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        // 如果有请求体数据，需要在这里添加
+        // body: JSON.stringify({key: 'value'}),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // 或者根据实际情况使用 response.text()
+        })
+        .then(data => {
+            alert('Global notification sent successfully!');
+        })
+        .catch(error => {
+            console.error('Error sending global notification:', error);
+            alert('Global notification sent successfully!');
+        });
+}
+</script>
+<script>
+    document.getElementById('searchShop').addEventListener('click', function() {
+        let form = this.closest('form'); // 获取最近的父表单元素
+        form.submit(); // 提交表单
+    });
+</script>
+
+</body>
+
+</html>

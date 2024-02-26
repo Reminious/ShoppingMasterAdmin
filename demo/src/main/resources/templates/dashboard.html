@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 添加样式以将页面缩小为四分之一 */
+        body {
+            width: 25%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    
+        <div>
+        <h2>Total Users:</h2>
+        <p th:text="${totalUsers}"></p>
+    </div>
+
+    <div>
+        <h2>Total Coupons:</h2>
+        <p th:text="${totalCoupons}"></p>
+    </div>
+
+    <div>
+        <h2>Total Shops:</h2>
+        <p th:text="${totalShops}"></p>
+    </div>
+    
+    
+
+    <div th:if="${not #maps.isEmpty(shopCountMap)}">
+        <h2>Shop Counts:</h2>
+        <ul>
+            <!-- 使用th:limit来限制展示的条数 -->
+            <li th:each="entry, iterStat : ${shopCountMap}" th:if="${iterStat.index lt 10}">
+                <span th:text="${entry.key}"></span>: <span th:text="${entry.value}"></span>
+            </li>
+        </ul>
+
+        <!-- Chart.js integration -->
+        <canvas th:id="myChart"></canvas>
+        <script th:inline="javascript">
+            var labels = /*[[${shopCountMap.keySet()}]]*/ [];
+            var data = /*[[${shopCountMap.values()}]]*/ [];
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Shop Counts',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div th:if="${#maps.isEmpty(shopCountMap)}">
+        <p>No shop counts available.</p>
+    </div>
+<a href="/admin/coupon?shopId=1" class="btn btn-primary">Back</a>
+    <!-- Add more content as needed -->
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap Core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <title>Create User</title>
+</head>
+<body>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="register-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Create User</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- 显示成功消息 -->
+                    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+                    <!-- 显示错误消息 -->
+                    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+                    <form th:action="@{/admin/user/create}" method="post" role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input class="form-control" type="text" id="username" name="username" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input class="form-control" type="password" id="password" name="password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="type">Type:</label>
+                                <select class="form-control" id="type" name="type" required disabled>
+                                    <option value="user">User</option>
+                                    <!-- Add other types as needed -->
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Submit</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop List</title>
+    <!-- 添加CSS样式和JavaScript的链接 -->
+</head>
+<body>
+<h1>商店列表</h1>
+<ul>
+    <!-- 循环遍历商店列表 -->
+    <li th:each="web : ${webs}">
+        <!-- 将shopName设置为超链接 -->
+        <a th:href="@{'/admin/coupon'(shopId=${web.id})}" th:text="${web.shopName}">Shop Name</a>
+    </li>
+</ul>
+</body>
+</html>
